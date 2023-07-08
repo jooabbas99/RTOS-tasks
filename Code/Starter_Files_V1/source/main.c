@@ -65,7 +65,9 @@
 #include "serial.h"
 
 // led task
+#include "led_task.h"
 
+#include "button_task.h"
 /*-----------------------------------------------------------*/
 
 /* Constants to setup I/O and processor. */
@@ -80,7 +82,14 @@
  * minimal as most of the setup is managed by the settings in the project
  * file.
  */
-TaskHandle_t	ledTaskHandle	= NULL;
+
+TaskHandle_t Led_task_Handler = NULL;
+TaskHandle_t Button_task_Handler = NULL;
+
+SemaphoreHandle_t sem_on_off;
+
+led_task_config led_task_cfg;
+button_task_config button_task_cfg;
 
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
@@ -97,20 +106,34 @@ int main( void )
 	/* Setup the hardware for use with the Keil demo board. */
 	prvSetupHardware();
 
-	
-    /* Create Tasks here */
+	sem_on_off = xSemaphoreCreateBinary();
+
+	led_task_cfg.pin_num = PIN1;
+	led_task_cfg.semaphore = &sem_on_off;
+
+	button_task_cfg.pin_num = PIN0;
+	button_task_cfg.semaphore = &sem_on_off;
+
+
+	/* Now all the tasks have been started - start the scheduler.*/
 	xTaskCreate(
-		ledTask,
-		"led task ",
-		configMINIMAL_STACK_SIZE,
-		(void *)NULL,
-		1,
-		&ledTaskHandle
+			ledTask,       							/* Function that implements the task. */
+			"led task",          						/* Text name for the task. */
+			configMINIMAL_STACK_SIZE,     /* Stack size in words, not bytes. */
+			&led_task_cfg,    					/* Parameter passed into the task. */
+			1,							/* Priority at which the task is created. */
+			&Led_task_Handler 
 	);
-
-
-	/* Now all the tasks have been started - start the scheduler.
-
+		xTaskCreate(
+				button_task,       							/* Function that implements the task. */
+				"button task",          						/* Text name for the task. */
+				configMINIMAL_STACK_SIZE,     /* Stack size in words, not bytes. */
+				&button_task_cfg,    					/* Parameter passed into the task. */
+				2,							/* Priority at which the task is created. */
+				&Button_task_Handler 
+				);
+	
+	/*
 	NOTE : Tasks run in system mode and the scheduler runs in Supervisor mode.
 	The processor MUST be in supervisor mode when vTaskStartScheduler is 
 	called.  The demo applications included in the FreeRTOS.org download switch

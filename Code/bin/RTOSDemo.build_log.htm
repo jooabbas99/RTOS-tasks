@@ -36,29 +36,41 @@ Starter_Files_V1\source\GPIO.c(49): warning:  #127-D: expected a statement
   		}
 Starter_Files_V1\source\GPIO.c: 1 warning, 0 errors
 compiling main.c...
-Starter_Files_V1\source\led_task.h(12): warning:  #1-D: last line of file ends without a newline
+Starter_Files_V1\source\led_task.h(25): warning:  #1-D: last line of file ends without a newline
   #endif
-Starter_Files_V1\source\main.c: 1 warning, 0 errors
-compiling led_task.c...
-Starter_Files_V1\source\led_task.h(12): warning:  #1-D: last line of file ends without a newline
+Starter_Files_V1\source\button_task.h(17): warning:  #1-D: last line of file ends without a newline
   #endif
-Starter_Files_V1\source\led_task.c(16): warning:  #1-D: last line of file ends without a newline
-  }
-Starter_Files_V1\source\led_task.c: 2 warnings, 0 errors
+Starter_Files_V1\source\main.c: 2 warnings, 0 errors
 compiling serial.c...
 Starter_Files_V1\source\serial.c(185): warning:  #550-D: variable "cChar"  was set but never used
   signed char cChar;
 Starter_Files_V1\source\serial.c: 1 warning, 0 errors
+compiling led_task.c...
+Starter_Files_V1\source\led_task.h(25): warning:  #1-D: last line of file ends without a newline
+  #endif
+Starter_Files_V1\source\led_task.c(21): warning:  #1-D: last line of file ends without a newline
+  }
+Starter_Files_V1\source\led_task.c: 2 warnings, 0 errors
 compiling list.c...
+compiling button_task.c...
+Starter_Files_V1\source\button_task.h(17): warning:  #1-D: last line of file ends without a newline
+  #endif
+Starter_Files_V1\source\button_task.c(26): warning:  #111-D: statement is unreachable
+  	vTaskDelay(25);
+Starter_Files_V1\source\button_task.c(9): warning:  #177-D: variable "sec_counter"  was declared but never referenced
+  	uint8_t sec_counter =0;
+Starter_Files_V1\source\button_task.c(29): warning:  #1-D: last line of file ends without a newline
+  }
+Starter_Files_V1\source\button_task.c(29): error:  #169: expected a declaration
+  }
+Starter_Files_V1\source\button_task.c: 4 warnings, 1 error
 compiling tasks.c...
-compiling queue.c...
-assembling portASM.s...
-compiling heap_2.c...
 compiling port.c...
-linking...
-Program Size: Code=7336 RO-data=32 RW-data=188 ZI-data=15356  
-FromELF: creating hex file...
-".\bin\RTOSDemo.axf" - 0 Error(s), 5 Warning(s).
+compiling queue.c...
+compiling heap_2.c...
+assembling portASM.s...
+".\bin\RTOSDemo.axf" - 1 Error(s), 10 Warning(s).
+Target not created.
 Build Time Elapsed:  00:00:04
 </pre>
 </body>

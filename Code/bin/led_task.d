@@ -13,3 +13,5 @@
 .\bin\led_task.o: Starter_Files_V1\header\GPIO.h
 .\bin\led_task.o: Source\include\task.h
 .\bin\led_task.o: Source\include\list.h
+.\bin\led_task.o: Source\include\semphr.h
+.\bin\led_task.o: Source\include\queue.h
