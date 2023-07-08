@@ -66,6 +66,8 @@
 
 // led task
 #include "led_task.h"
+
+#include "button_task.h"
 /*-----------------------------------------------------------*/
 
 /* Constants to setup I/O and processor. */
@@ -80,14 +82,13 @@
  * minimal as most of the setup is managed by the settings in the project
  * file.
  */
-TaskHandle_t	ledTask1Handle	= NULL;
-TaskHandle_t	ledTask2Handle	= NULL;
-TaskHandle_t	ledTask3Handle	= NULL;
+TaskHandle_t	ledTaskHandle	= NULL;
 
+TaskHandle_t	btnTaskHandle	= NULL;
 
-led_task_config task_1_cfg;
-led_task_config task_2_cfg;
-led_task_config task_3_cfg;
+led_task_config task_cfg;
+
+button_task_config btn_task_cfg;
 
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
@@ -104,42 +105,29 @@ int main( void )
 	/* Setup the hardware for use with the Keil demo board. */
 	prvSetupHardware();
 
-		task_1_cfg.pin_num = PIN1;
-		task_1_cfg.delay = 100;
-
-		task_2_cfg.pin_num = PIN2;
-		task_2_cfg.delay = 500;
-
-
-		task_3_cfg.pin_num = PIN3;
-		task_3_cfg.delay = 1000;
-
+		task_cfg.pin_num = PIN1;
+		task_cfg.delay = 100;
+		btn_task_cfg.pin_num = PIN0;
+		btn_task_cfg.led_delay = &task_cfg.delay;
 	
     /* Create Tasks here */
+		xTaskCreate(
+		ledTask,
+		"Button task",
+		configMINIMAL_STACK_SIZE,
+		(void *)&btn_task_cfg,
+		1,
+		&btnTaskHandle
+	);
 	xTaskCreate(
 		ledTask,
 		"led task 1",
 		configMINIMAL_STACK_SIZE,
-		(void *)&task_1_cfg,
-		1,
-		&ledTask1Handle
+		(void *)&task_cfg,
+		2,
+		&ledTaskHandle
 	);
-	xTaskCreate(
-			ledTask,
-			"led task 2",
-			configMINIMAL_STACK_SIZE,
-			(void *)&task_2_cfg,
-			2,
-			&ledTask2Handle
-		);
-		xTaskCreate(
-		ledTask,
-		"led task 3",
-		configMINIMAL_STACK_SIZE,
-		(void *)&task_3_cfg,
-		3,
-		&ledTask3Handle
-	);
+
 
 	/* Now all the tasks have been started - start the scheduler.
 

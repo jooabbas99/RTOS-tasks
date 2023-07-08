@@ -12,11 +12,14 @@ void ledTask(void *pvParameters)
 	}
 
 	for( ; ; ){
-
-				GPIO_write(PORT_0, pin_num, PIN_IS_HIGH);
-				vTaskDelay(delay_value);
-				GPIO_write(PORT_0, pin_num, PIN_IS_LOW);
-				vTaskDelay(delay_value);
+				if(delay_value == 0){
+					GPIO_write(PORT_0,pin_num, PIN_IS_LOW);
+				}else{
+					GPIO_write(PORT_0, pin_num, PIN_IS_HIGH);
+					vTaskDelay(delay_value);
+					GPIO_write(PORT_0, pin_num, PIN_IS_LOW);
+					vTaskDelay(delay_value);
+				}
 
 	}
 }
