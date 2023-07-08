@@ -65,7 +65,10 @@
 #include "serial.h"
 
 // led task
+#include "led_task.h"
+#include "serialTask.h"
 
+#include "button_task.h"
 /*-----------------------------------------------------------*/
 
 /* Constants to setup I/O and processor. */
@@ -80,8 +83,14 @@
  * minimal as most of the setup is managed by the settings in the project
  * file.
  */
-TaskHandle_t	ledTaskHandle	= NULL;
 
+TaskHandle_t serial_task_1_Handler = NULL;
+TaskHandle_t serial_task_2_Handler = NULL;
+
+SemaphoreHandle_t serial_mutex;
+
+serial_task_config serial_task_1_cfg;
+serial_task_config serial_task_2_cfg;
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
 
@@ -96,21 +105,36 @@ int main( void )
 {
 	/* Setup the hardware for use with the Keil demo board. */
 	prvSetupHardware();
+	serial_mutex =  xSemaphoreCreateMutex();
 
-	
-    /* Create Tasks here */
+	serial_task_1_cfg.data = (char *)"hello_from_serial_1";
+	serial_task_1_cfg.delay = 100;
+	serial_task_1_cfg.mutex = &serial_mutex;
+
+
+	serial_task_2_cfg.data = (char *)"hello_from_serial_2";
+	serial_task_2_cfg.delay = 500;
+	serial_task_2_cfg.mutex = &serial_mutex;
+
+	/* Now all the tasks have been started - start the scheduler.*/
+	/***************************task_1**************************************/	
 	xTaskCreate(
-		ledTask,
-		"led task ",
-		configMINIMAL_STACK_SIZE,
-		(void *)NULL,
-		1,
-		&ledTaskHandle
-	);
+                    serial_task,       							/* Function that implements the task. */
+                    "serial_task_1",          						/* Text name for the task. */
+                    configMINIMAL_STACK_SIZE,     /* Stack size in words, not bytes. */
+                    &serial_task_1_cfg,    					/* Parameter passed into the task. */
+                    1,							/* Priority at which the task is created. */
+                    &serial_task_1_Handler );
 
-
-	/* Now all the tasks have been started - start the scheduler.
-
+	xTaskCreate(
+                    serial_task,       							/* Function that implements the task. */
+                    "serial_task_1",          						/* Text name for the task. */
+                    configMINIMAL_STACK_SIZE,     /* Stack size in words, not bytes. */
+                    &serial_task_2_cfg,    					/* Parameter passed into the task. */
+                    1,							/* Priority at which the task is created. */
+                    &serial_task_2_Handler );
+	
+	/*
 	NOTE : Tasks run in system mode and the scheduler runs in Supervisor mode.
 	The processor MUST be in supervisor mode when vTaskStartScheduler is 
 	called.  The demo applications included in the FreeRTOS.org download switch

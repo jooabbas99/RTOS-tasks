@@ -16,3 +16,6 @@
 .\bin\main.o: Starter_Files_V1\header\serial.h
 .\bin\main.o: Starter_Files_V1\source\led_task.h
 .\bin\main.o: Starter_Files_V1\header\GPIO.h
+.\bin\main.o: Source\include\semphr.h
+.\bin\main.o: Source\include\queue.h
+.\bin\main.o: Starter_Files_V1\source\button_task.h
