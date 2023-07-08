@@ -465,6 +465,16 @@
               <FileType>1</FileType>
               <FilePath>.\Starter_Files_V1\source\led_task.c</FilePath>
             </File>
+            <File>
+              <FileName>button_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Starter_Files_V1\source\button_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>button_task.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Starter_Files_V1\source\button_task.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -963,6 +973,16 @@
               <FileName>led_task.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Starter_Files_V1\source\led_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>button_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Starter_Files_V1\source\button_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>button_task.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Starter_Files_V1\source\button_task.h</FilePath>
             </File>
           </Files>
         </Group>

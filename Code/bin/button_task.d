@@ -1,0 +1,17 @@
+.\bin\button_task.o: Starter_Files_V1\source\button_task.c
+.\bin\button_task.o: Starter_Files_V1\source\button_task.h
+.\bin\button_task.o: Source\include\FreeRTOS.h
+.\bin\button_task.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\bin\button_task.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\bin\button_task.o: .\FreeRTOSConfig.h
+.\bin\button_task.o: C:\Keil_v5\ARM\INC\Philips\lpc21xx.h
+.\bin\button_task.o: Source\include\projdefs.h
+.\bin\button_task.o: Source\include\portable.h
+.\bin\button_task.o: Source\include\deprecated_definitions.h
+.\bin\button_task.o: Source\include\..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h
+.\bin\button_task.o: Source\include\mpu_wrappers.h
+.\bin\button_task.o: Starter_Files_V1\header\GPIO.h
+.\bin\button_task.o: Source\include\task.h
+.\bin\button_task.o: Source\include\list.h
+.\bin\button_task.o: Source\include\semphr.h
+.\bin\button_task.o: Source\include\queue.h
