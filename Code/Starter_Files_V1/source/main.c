@@ -65,7 +65,9 @@
 #include "serial.h"
 
 // led task
+#include "led_task.h"
 
+#include "button_task.h"
 /*-----------------------------------------------------------*/
 
 /* Constants to setup I/O and processor. */
@@ -82,6 +84,12 @@
  */
 TaskHandle_t	ledTaskHandle	= NULL;
 
+TaskHandle_t	btnTaskHandle	= NULL;
+
+led_task_config task_cfg;
+
+button_task_config btn_task_cfg;
+
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
 
@@ -97,14 +105,26 @@ int main( void )
 	/* Setup the hardware for use with the Keil demo board. */
 	prvSetupHardware();
 
+		task_cfg.pin_num = PIN1;
+		task_cfg.delay = 100;
+		btn_task_cfg.pin_num = PIN0;
+		btn_task_cfg.led_delay = &task_cfg.delay;
 	
     /* Create Tasks here */
+		xTaskCreate(
+		ledTask,
+		"Button task",
+		configMINIMAL_STACK_SIZE,
+		(void *)&btn_task_cfg,
+		1,
+		&btnTaskHandle
+	);
 	xTaskCreate(
 		ledTask,
-		"led task ",
+		"led task 1",
 		configMINIMAL_STACK_SIZE,
-		(void *)NULL,
-		1,
+		(void *)&task_cfg,
+		2,
 		&ledTaskHandle
 	);
 
