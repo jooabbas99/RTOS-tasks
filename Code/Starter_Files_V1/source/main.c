@@ -66,7 +66,6 @@
 
 // led task
 #include "led_task.h"
-#include "serialTask.h"
 
 #include "button_task.h"
 /*-----------------------------------------------------------*/
@@ -84,13 +83,14 @@
  * file.
  */
 
-TaskHandle_t serial_task_1_Handler = NULL;
-TaskHandle_t serial_task_2_Handler = NULL;
+TaskHandle_t Led_task_Handler = NULL;
+TaskHandle_t Button_task_Handler = NULL;
 
-SemaphoreHandle_t serial_mutex;
+SemaphoreHandle_t sem_on_off;
 
-serial_task_config serial_task_1_cfg;
-serial_task_config serial_task_2_cfg;
+led_task_config led_task_cfg;
+button_task_config button_task_cfg;
+
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
 
@@ -105,34 +105,33 @@ int main( void )
 {
 	/* Setup the hardware for use with the Keil demo board. */
 	prvSetupHardware();
-	serial_mutex =  xSemaphoreCreateMutex();
 
-	serial_task_1_cfg.data = (char *)"hello_from_serial_1";
-	serial_task_1_cfg.delay = 100;
-	serial_task_1_cfg.mutex = &serial_mutex;
+	sem_on_off = xSemaphoreCreateBinary();
 
+	led_task_cfg.pin_num = PIN1;
+	led_task_cfg.semaphore = &sem_on_off;
 
-	serial_task_2_cfg.data = (char *)"hello_from_serial_2";
-	serial_task_2_cfg.delay = 500;
-	serial_task_2_cfg.mutex = &serial_mutex;
+	button_task_cfg.pin_num = PIN0;
+	button_task_cfg.semaphore = &sem_on_off;
+
 
 	/* Now all the tasks have been started - start the scheduler.*/
-	/***************************task_1**************************************/	
 	xTaskCreate(
-                    serial_task,       							/* Function that implements the task. */
-                    "serial_task_1",          						/* Text name for the task. */
-                    configMINIMAL_STACK_SIZE,     /* Stack size in words, not bytes. */
-                    &serial_task_1_cfg,    					/* Parameter passed into the task. */
-                    1,							/* Priority at which the task is created. */
-                    &serial_task_1_Handler );
-
-	xTaskCreate(
-                    serial_task,       							/* Function that implements the task. */
-                    "serial_task_1",          						/* Text name for the task. */
-                    configMINIMAL_STACK_SIZE,     /* Stack size in words, not bytes. */
-                    &serial_task_2_cfg,    					/* Parameter passed into the task. */
-                    1,							/* Priority at which the task is created. */
-                    &serial_task_2_Handler );
+			ledTask,       							/* Function that implements the task. */
+			"led task",          						/* Text name for the task. */
+			configMINIMAL_STACK_SIZE,     /* Stack size in words, not bytes. */
+			&led_task_cfg,    					/* Parameter passed into the task. */
+			1,							/* Priority at which the task is created. */
+			&Led_task_Handler 
+	);
+		xTaskCreate(
+				button_task,       							/* Function that implements the task. */
+				"button task",          						/* Text name for the task. */
+				configMINIMAL_STACK_SIZE,     /* Stack size in words, not bytes. */
+				&button_task_cfg,    					/* Parameter passed into the task. */
+				2,							/* Priority at which the task is created. */
+				&Button_task_Handler 
+				);
 	
 	/*
 	NOTE : Tasks run in system mode and the scheduler runs in Supervisor mode.
