@@ -5,14 +5,11 @@
 #include "task.h"
 #include "semphr.h"
 #include "serial.h"
-
-
+#include "common.h"
 
 /* configration struct to config the serial task and its duration*/
 typedef struct{
-	uint16_t delay;
-	char *data;
-	SemaphoreHandle_t *mutex; /*pointer to mutex*/
+	QueueHandle_t *queue; /*pointer to queue*/
 }serial_task_config;
 
 /*task to send data*/

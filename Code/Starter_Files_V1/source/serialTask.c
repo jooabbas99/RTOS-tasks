@@ -2,21 +2,17 @@
 
 
 void serial_task(void *pvParameters){
-	uint32_t load_counter;
-	uint8_t msg_cnt;
+	message_packet data;
+	uint8_t counter=0;
 	for( ; ; ){
-			if(xSemaphoreTake( *(((serial_task_config *)pvParameters)->mutex),  ( TickType_t ) 100) == pdTRUE){
-				for(msg_cnt=0; msg_cnt<10; msg_cnt++){
-					vSerialPutString((const signed char*)(((serial_task_config *)pvParameters)->data), 20);
-					if(((serial_task_config *)pvParameters)->delay>100){
-						for(load_counter=0; load_counter< 100000; load_counter++);
-					}
-				}
-				
-				xSemaphoreGive( *(((serial_task_config *)pvParameters)->mutex));
+
+
+			if( xQueueReceive( *(((serial_task_config *)pvParameters)->queue), &(data), ( TickType_t ) 200 ) == pdPASS )
+      {
+				for (counter=0;data.ucData[counter]!= '\0';counter++);
+				vSerialPutString((const signed char*)(&data), ++counter);
 			}
-			vTaskDelay(((serial_task_config *)pvParameters)->delay);
-			
-			
+
+
 	}
 }

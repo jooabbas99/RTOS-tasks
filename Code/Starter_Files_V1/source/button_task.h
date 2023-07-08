@@ -4,10 +4,13 @@
 #include "GPIO.h"
 #include "task.h"
 #include "semphr.h"
+#include "common.h"
+#include <string.h>
 /* configration struct to config the task with wanted pin to toggle and its duration*/
 typedef struct{
-    pinX_t pin_num;	
-	SemaphoreHandle_t *semaphore; /*pointer to semaphore*/
+    sender_id id;
+    pinX_t pin_num;/*pin number*/
+		QueueHandle_t *queue; /*pointer to queue*/
 }button_task_config;
 
 
