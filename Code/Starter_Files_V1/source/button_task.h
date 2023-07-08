@@ -3,11 +3,11 @@
 #include "FreeRTOS.h"
 #include "GPIO.h"
 #include "task.h"
-
+#include "semphr.h"
 /* configration struct to config the task with wanted pin to toggle and its duration*/
 typedef struct{
     pinX_t pin_num;	
-    uint16_t *led_delay;
+	SemaphoreHandle_t *semaphore; /*pointer to semaphore*/
 }button_task_config;
 
 

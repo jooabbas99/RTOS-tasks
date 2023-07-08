@@ -13,3 +13,5 @@
 .\bin\button_task.o: Starter_Files_V1\header\GPIO.h
 .\bin\button_task.o: Source\include\task.h
 .\bin\button_task.o: Source\include\list.h
+.\bin\button_task.o: Source\include\semphr.h
+.\bin\button_task.o: Source\include\queue.h

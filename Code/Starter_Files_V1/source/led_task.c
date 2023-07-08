@@ -4,22 +4,18 @@
 
 void ledTask(void *pvParameters)
 {
-	uint16_t delay_value = 1000;
-	pinX_t pin_num = PIN1;
-	if(pvParameters != NULL){
-		delay_value = ((led_task_config *)pvParameters)->delay;
-		pin_num = ((led_task_config *)pvParameters)->pin_num;
-	}
-
+	led_state prev_state = LED_OFF;
+	GPIO_write(PORT_0, ((led_task_config *)pvParameters)->pin_num, PIN_IS_LOW);
 	for( ; ; ){
-				if(delay_value == 0){
-					GPIO_write(PORT_0,pin_num, PIN_IS_LOW);
-				}else{
-					GPIO_write(PORT_0, pin_num, PIN_IS_HIGH);
-					vTaskDelay(delay_value);
-					GPIO_write(PORT_0, pin_num, PIN_IS_LOW);
-					vTaskDelay(delay_value);
+				if( xSemaphoreTake( *(((led_task_config *)pvParameters)->semaphore), ( TickType_t ) 0) == pdTRUE ){
+					 if(prev_state == LED_OFF){
+						 GPIO_write(PORT_0, ((led_task_config *)pvParameters)->pin_num, PIN_IS_HIGH);
+						 prev_state = LED_ON;
+					 }else{
+						 GPIO_write(PORT_0, ((led_task_config *)pvParameters)->pin_num, PIN_IS_LOW);
+						 prev_state = LED_OFF;
+					 }
 				}
-
+					vTaskDelay(25);
 	}
 }
